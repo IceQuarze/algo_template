@@ -134,3 +134,29 @@ void spfa(int root){
 	}
 }
 ```
+### 埃氏筛法
+```C++
+bool nP[N];
+void SI(){
+	for(int i=2;i<=N;++i){
+		if(nP[i]) continue;
+		for(int j=2;i*j<=N;++j)
+			nP[i*j]=true;
+	}
+}
+```
+### 欧拉筛法
+```C++
+vector<int> vp;
+int vst[N];
+void SI(){
+	for(int i=2;i<=N;++i){
+		if(!vst[i]) vp.push_back(i);
+		for(auto &p:vp){
+			if(p*i>N) break;
+			vst[p*i]=true;
+			if(p%i==0) break;
+		}
+	}
+}
+```
