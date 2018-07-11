@@ -191,3 +191,18 @@ bool RM(int n,int p){
 	return true;
 }
 ```
+### 欧拉路
+```C++
+int cnt[N][N];
+vector<int> pth;
+void dfs(int cur){
+    for(int i=0;i<=6;++i){
+        while(cnt[cur][i]){
+            --cnt[cur][i];
+            --cnt[i][cur];
+            dfs(i);
+        }
+    }
+    pth.push_back(cur);
+}
+```
