@@ -160,3 +160,34 @@ void SI(){
 	}
 }
 ```
+### RM素数判断
+```C++
+int fm(int a,int r,int m){
+	int t=a%m,ans=1;
+	while(r){
+		if(r&1){
+			ans*=t;
+			ans%=m;
+		}
+		r>>=1;
+		t*=t;
+		t%=m;
+	}
+	return ans;
+}
+bool RM(int n,int p){
+	int d=n-1;
+	while(d%2==0){
+		d>>=1;
+	}
+	for(int i=n-1;i>=d;i>>=1){
+		int t=fm(p,r,n);
+		if(t==n-1){
+			return true;
+		}else if(t!=1&&t!=n-1){
+			return false;
+		}
+	}
+	return true;
+}
+```
