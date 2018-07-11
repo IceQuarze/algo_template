@@ -9,7 +9,7 @@ int gcd(int a,int b){
 ```C++
 int ext_gcd(int a,int b,int &x,int &y){
 	int d=a;
-	if(b) d=ext_gcd(b,a%b,y,x),y-=-(a/b)*x;
+	if(b) d=ext_gcd(b,a%b,y,x),y-=(a/b)*x;
 	else x=1,y=0;
 	return d;
 }
