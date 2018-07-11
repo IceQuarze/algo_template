@@ -82,3 +82,22 @@ void tarjan(int cur){
 	}
 }
 ```
+### spfa(dfs判负环)
+```C++
+vector<int> ve[N];
+int vst[N],dis[N],w[N][N];
+bool flag=false;
+void spfa(int cur){
+	vst[cur]=true;
+	for(auto &nxt:ve[cur]){
+		if(dis[nxt]>dis[cur]+w[cur][nxt]){
+			if(vst[nxt]){
+				flag=true;
+				return;
+			}
+			dis[nxt]=dis[cur]+w[cur][nxt];
+			spfa(nxt);
+		}
+	}
+	vst[cur]=false;
+}```
