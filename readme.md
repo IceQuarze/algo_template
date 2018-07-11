@@ -155,7 +155,7 @@ void SI(){
 		for(auto &p:vp){
 			if(p*i>N) break;
 			vst[p*i]=true;
-			if(p%i==0) break;
+			if(i%p==0) break;
 		}
 	}
 }
