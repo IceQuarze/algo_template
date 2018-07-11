@@ -87,6 +87,7 @@ void tarjan(int cur){
 vector<int> ve[N];
 int vst[N],dis[N],w[N][N];
 bool flag=false;
+//dis[cur]=0;
 void spfa(int cur){
 	vst[cur]=true;
 	for(auto &nxt:ve[cur]){
@@ -100,4 +101,36 @@ void spfa(int cur){
 		}
 	}
 	vst[cur]=false;
-}```
+}
+```
+### spfa(bfs最短路)
+```C++
+vector<int> ve[N]
+int vst[N],dis[N],w[N][N],cnt[N];
+void spfa(int root){
+	queue<int> q;
+	q.push(root);
+	dis[root]=0;
+	++cnt[root];
+	vst[root]=true;
+	while(!q.empty()){
+		int cur=q.front();q.pop();
+		vst[cur]=false;
+		if(cnt[cur]>n){
+			flag=true;
+			return;
+		}
+	
+		for(auto &nxt:ve[cur]){
+			if(dis[nxt]>dis[cur]+w[cur][nxt]){
+				dis[nxt]=dis[cur]+w[cur][nxt];
+				if(!vst[nxt]){
+					q.push(nxt);
+					vst[nxt]=true;
+					++cnt[nxt];
+				}
+			}
+		}
+	}
+}
+```
