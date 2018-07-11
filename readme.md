@@ -36,3 +36,19 @@ void kmp(){
 	}
 }
 ```
+### 左偏树
+```C++
+node* merge(node *a,node *b){
+	if(a==NULL)
+		return b;
+	if(b==NULL)
+		return a;
+	if(a->v<b->v)
+		swap(a,b);
+	a->r=merge(a->r,b);
+	if(a->l==NULL||a->l->h<a->r->h)
+		swap(a->l,a->r);
+	a->h=a->l->h+1;
+	return a;
+}
+```
