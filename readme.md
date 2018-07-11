@@ -52,3 +52,33 @@ node* merge(node *a,node *b){
 	return a;
 }
 ```
+### tarjan缩点
+```C++
+vector<int> ve[N];
+vector<int> stk;
+int mark[N];
+int dfn[N],low[N];
+int clk=0,mclk=0;
+void tarjan(int cur){
+	stk.push_back(cur);
+	dfn[cur]=low[cur]=++clk;
+	for(auto &nxt:ve[cur]){
+		if(!dfn[nxt]){
+			tarjan(nxt);
+			low[cur]=min(low[cur],low[nxt]);
+		}else if(!mark[nxt]){
+			low[cur]=min(low[cur],dfn[nxt]);
+		}
+	}
+	if(low[cur]==dfn[cur]){
+		++mclk;
+		int t;
+		while(true){
+			t=stk.back();
+			mark[t]=mclk;
+			if(t==cur)
+				break;
+		}
+	}
+}
+```
