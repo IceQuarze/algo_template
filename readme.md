@@ -194,6 +194,7 @@ int fp(int a,int r,int m){
 ```
 ### RM素数判断
 ```C++
+//2,3,7,11,61,24251
 bool RM(int n,int p){
 	int d=n-1;
 	while(d%2==0){
