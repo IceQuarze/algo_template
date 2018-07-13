@@ -160,9 +160,25 @@ void SI(){
 	}
 }
 ```
-### RM素数判断
+### 快速乘
 ```C++
-int fm(int a,int r,int m){
+int fm(int a,int b,int m){
+	int ans=0;
+	while(b){
+		if(b&1){
+			ans+=a;
+			ans%=m;
+		}
+		b>>=1;
+		a+=a;
+		a%=m;
+	}
+	return ans;
+}
+```
+### 快速幂
+```C++
+int fp(int a,int r,int m){
 	int t=a%m,ans=1;
 	while(r){
 		if(r&1){
@@ -175,6 +191,9 @@ int fm(int a,int r,int m){
 	}
 	return ans;
 }
+```
+### RM素数判断
+```C++
 bool RM(int n,int p){
 	int d=n-1;
 	while(d%2==0){
@@ -189,6 +208,34 @@ bool RM(int n,int p){
 		}
 	}
 	return true;
+}
+```
+### RHO素因数分解
+```C++
+int f(int x,int m){
+	int r;
+	if(m>1000000){
+		r=999979; //魔数
+	}else if(m>1000){
+		r=997; //魔数
+	}else{
+		r=rand()%10;
+	}
+	return (fm(x,x,m)+r)%m;
+}
+int RHO(int n){
+	int a=rand()%n;
+	int b=a;
+	while(true){
+		a=f(a,m);b=f(f(b,m),m);
+		if(a==b){
+			return -1;
+		}
+		int g=gcd(abs(a-b),m);
+		if(g!=1&&g!=n){
+			return g;
+		}
+	}
 }
 ```
 ### 欧拉路
