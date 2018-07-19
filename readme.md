@@ -254,3 +254,26 @@ void dfs(int cur){
     pth.push_back(cur);
 }
 ```
+### 尼姆博奕sg函数
+```C++
+vector<int> nxt;
+int sg(int n){
+	if(n==0){
+		return 0;
+	}else{
+		vector<bool> vst(N+5,false);
+		for(auto &t:nxt){
+			if(t>n){
+				break;
+			}else{
+				vst[n-nxt]=true;
+			}
+		}
+		for(int i=0;i<=N;++i){
+			if(!vst[i]){
+				return i;
+			}
+		}
+	}
+}
+```
