@@ -277,3 +277,63 @@ int sg(int n){
 	}
 }
 ```
+### Treap
+```C++
+struct node{
+	int prio,v;
+	node *l,*r;
+}
+node *rrot(node *cur){
+	node *nxt=cur->l;
+	cur->l=nxt->r;
+	nxt->r=cur;
+	return nxt;
+}
+node *lrot(node *cur){
+	node *nxt=cur->r;
+	cur->r=nxt->l;
+	nxt->l=cur;
+	return nxt;
+}
+node *ins(node *cur,node *tp){
+	if(cur==NULL){
+		return tp;
+	}
+	if(cur->v>tp->v){
+		cur->l=ins(cur->l,tp);
+		if(cur->prio>cur->l->prio){
+			cur=rrot(cur);
+		}
+	}else{
+		cur->r=ins(cur->r,tp);
+		if(cur->prio>cur->r->prio){
+			cur=lrot(cur);
+		}
+	}
+	return cur;
+}
+node *rmv(node *cur,int v){
+	if(cur==NULL){
+		return NULL;
+	}
+	if(cur->v>v){
+		cur->l=rmv(cur->l,v);
+	}else if(cur->v<tp->v){
+		cur->r=rmv(cur->r,v);
+	}else{
+		if(cur->l==NULL){
+			return cur->r;
+		}else if(cur->r==NULL){
+			return cur->l;
+		}
+		if(cur->l->prio<cur->r->prio){
+			cur=rrot(cur);
+			cur->r=rmv(cur->r,v);
+		}else{
+			cur=lrot(cur);
+			cur->l=rmv(cur->l,v);
+		}
+	}
+	return cur;
+}
+```
