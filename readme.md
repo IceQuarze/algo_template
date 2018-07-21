@@ -52,6 +52,17 @@ node* merge(node *a,node *b){
 	return a;
 }
 ```
+### 并查集
+```C++
+int tree[N+5];
+int aci(int cur){
+	if(tree[cur]==0){
+		return cur;
+	}else{
+		return tree[cur]=aci(tree[cur]);
+	}
+}
+```
 ### tarjan缩点
 ```C++
 vector<int> ve[N];
