@@ -323,8 +323,7 @@ node *rmv(node *cur,int v){
 	}else{
 		if(cur->l==NULL){
 			return cur->r;
-		}
-		if(cur->r==NULL){
+		}else if(cur->r==NULL){
 			return cur->l;
 		}
 		if(cur->l->prio<cur->r->prio){
