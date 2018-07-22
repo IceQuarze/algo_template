@@ -348,3 +348,19 @@ node *rmv(node *cur,int v){
 	return cur;
 }
 ```
+### 欧拉函数
+``` C++
+int phi(int n){
+	int mul=n;
+	for(int i=2;i*i<=n;++i){
+		if(n%i){
+			mul-=mul/i;
+			while(n%i==0) n/=i;
+		}
+	}
+	if(n>1){
+		mul-=mul/n;
+	}
+	return mul;
+}
+```
