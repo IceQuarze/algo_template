@@ -364,3 +364,42 @@ int phi(int n){
 	return mul;
 }
 ```
+### 区间线段树
+```C++
+int tree[N+5],inc[N+5];
+void udp(int cur,int l,int r,int tl,int tr,int v){
+    int mid=(r+l)/2;
+    if(l==tl&&r==tr){
+        tree[cur]+=(tr-tl+1)*v;
+        inc[cur]+=v;
+        return;
+    }
+    if(tr<=mid){
+        udp(cur*2,l,mid,tl,tr,v);
+    }else if(tl>=mid+1){
+        udp(cur*2+1,mid+1,r,tl,tr,v);
+    }else{
+        udp(cur*2,l,mid,tl,mid,v);
+        udp(cur*2+1,mid+1,r,mid+1,tr,v);
+    }
+    tree[cur]+=(tr-tl+1)*v;
+}
+int get(int cur,int l,int r,int tl,int tr){
+    int mid=(r+l)/2;
+    if(l==tl&&r==tr){
+        return tree[cur];
+    }
+    tree[cur*2]+=(mid-l+1)*inc[cur];
+    tree[cur*2+1]+=(r-(mid+1)+1)*inc[cur];
+    inc[cur*2]+=inc[cur];
+    inc[cur*2+1]+=inc[cur];
+    inc[cur]=0;
+    if(tr<=mid){
+        return get(cur*2,l,mid,tl,tr);
+    }else if(tl>=mid+1){
+        return get(cur*2+1,mid+1,r,tl,tr);
+    }else{
+        return get(cur*2,l,mid,tl,mid)+get(cur*2+1,mid+1,r,mid+1,tr);
+    }
+}
+```
