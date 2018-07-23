@@ -438,7 +438,8 @@ void ST(){
 	}
 	for(int j=1;j<=20;++j){
 		for(int i=1;i<=N;++i){
-			tree[i][j]=max(tree[i][j-1],tree[i+(1<<(j-1)-1][j-1]);
+			if(i+(1<<(j-1)-1<=n)
+				tree[i][j]=max(tree[i][j-1],tree[i+(1<<(j-1)-1][j-1]);
 		}
 	}
 }
