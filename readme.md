@@ -403,3 +403,28 @@ int get(int cur,int l,int r,int tl,int tr){
     }
 }
 ```
+### 马拉车回文算法
+```C++
+//s="$#a#b#c#d#"
+itn p[N+5];
+int mlc(){
+	int len=strlen(s);
+	int mx,mx_len,id;
+	for(int i=1;i<len;++i){
+		if(i<mx){
+			p[i]=min(p[2*id-i],mx-i);
+		}else{
+			p[i]=1;
+		}
+		while(s[i-p[i]]==s[i+p[i]]){
+			++p[i];
+		}
+		if(i+p[i]>mx){
+			id=i;
+			mx=i+p[i];
+		}
+		mx_len=amx(mx_len,p[i]-1);
+	}
+	return mx_len;
+}
+```
