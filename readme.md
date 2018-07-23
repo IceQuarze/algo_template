@@ -428,3 +428,31 @@ int mlc(){
 	return mx_len;
 }
 ```
+### st表
+```C++
+int tree[N+5][25];
+int num[N+5];
+void ST(){
+	for(int i=1;i<=N;++i){
+		tree[i][0]=num[i];
+	}
+	for(int j=1;j<=20;++j){
+		for(int i=1;i<=N;++i){
+			tree[i][j]=max(tree[i][j-1],tree[i+(1<<(j-1)-1][j-1]);
+		}
+	}
+}
+int cal(int n){
+int cnt=0;
+	while(n){
+		++cnt;
+		n>>=1;
+	}
+	return cnt;
+}
+int search(int l,int r){
+	int d=r-l+1;
+	int c=cal(d);
+	return max(tree[l][c],tree[r-(1<<c)+1][c]);
+}
+```
