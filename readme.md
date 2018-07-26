@@ -457,3 +457,22 @@ int search(int l,int r){
 	return max(tree[l][c],tree[r-(1<<c)+1][c]);
 }
 ```
+### 匈牙利算法|最大二分图匹配
+```C++
+vector<int> ve[N+5];
+bool vst[N+5];
+int usd[N+5];
+bool find(int left){
+	for(int i=0;i<(int)ve[left].size();++i){
+		int nxt=ve[left][i];
+		if(!vst[nxt]){
+			vst[nxt]=true;
+			if(usd[nxt]==0||find(usd[nxt]){
+				usd[nxt]=left;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+```
