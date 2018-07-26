@@ -475,4 +475,10 @@ bool find(int left){
 	}
 	return false;
 }
+int main(){
+	int cnt=0;
+	for(int i=1;i<=n;++i){
+		if(find(i)) ++cnt;
+	}
+}
 ```
