@@ -66,7 +66,7 @@ void build(){
 					cur->nxt[i]->fail=root;
 					break;
 				}
-				if(f->nxt[i]!=NULL&f->nxt[i]!=cur->nxt[i]){
+				if(f->nxt[i]!=NULL&&f->nxt[i]!=cur->nxt[i]){
 					cur->nxt[i]->fail=f->nxt[i];
 					break;
 				}
@@ -84,7 +84,7 @@ void ac(const char *s){
 		while(cur!=root&&cur->nxt[s[i]-'a']==NULL) cur=cur->fail;
 		if(cur->nxt[s[i]-'a']!=NULL){
 			cur=cur->nxt[s[i]-'a'];
-			struct node *p=cur->fail;
+			struct node *p=cur;
 			while(p!=root){
 				++p->cnt;
 				p=p->fail;
@@ -92,7 +92,7 @@ void ac(const char *s){
 		}
 	}
 }
-int get(struct *cur,const char *s){
+int get(struct node *cur,const char *s){
 	if(*s=='\0') return cur->cnt;
 	else return get(cur->nxt[s[0]-'a'],s+1);
 }
