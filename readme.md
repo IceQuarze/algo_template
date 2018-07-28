@@ -488,7 +488,7 @@ int get(int cur,int l,int r,int tl,int tr){
 ### 马拉车回文算法
 ```C++
 //s="$#a#b#c#d#"
-itn p[N+5];
+int p[N+5];
 int mlc(){
 	int len=strlen(s);
 	int mx,mx_len,id;
@@ -505,7 +505,7 @@ int mlc(){
 			id=i;
 			mx=i+p[i];
 		}
-		mx_len=amx(mx_len,p[i]-1);
+		mx_len=max(mx_len,p[i]-1);
 	}
 	return mx_len;
 }
