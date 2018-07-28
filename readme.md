@@ -36,6 +36,64 @@ void kmp(){
 	}
 }
 ```
+### AC自动机
+```C++
+struct node{
+	struct node *nxt[26],*fail;
+	int cnt;
+	node(){
+		memset(nxt,0,sizeof(nxt));
+		fail=NULL;
+		cnt=0;
+	}
+};
+void ins(struct node *cur,const char *s){
+	if(*s=='\0') return;
+	if(cur->nxt[*s-'a']==NULL) cur->nxt[*s-'a']=new node();
+	ins(cur->nxt[*s-'a'],s+1);
+}
+void build(){
+	queue<struct node *> q;
+	q.push(root);
+	root->fail=NULL;
+	while(!q.empty()){
+		struct node *cur=q.front();q.pop();
+		for(int i=0;i<26;++i){
+			if(cur->nxt[i]==NULL) continue;
+			struct node *f=cur->fail;
+			while(true){
+				if(f=NULL){cur->nxt[i]->fail=root;break;}
+				if(f->nxt[i]!=NULL&f->nxt[i]!=cur->nxt[i]){cur->nxt[i]->fail=f->nxt[i];break;
+				else f=f->fail;
+			}
+		}
+		q.push(cur->nxt[i]);
+	}
+}
+void ac(const char *s){
+	struct node *cur=root;
+	for(int i=0;s[i]!='\0';++i){
+		while(cur!=root&&cur->nxt[s[i]-'a']==NULL) cur=cur->fail;
+		if(cur->nxt[s[i]-'a']!=NULL){
+			cur=cur->nxt[s[i]-'a'];
+			struct node *p=cur->fail;
+			while(p!=root){
+				++p->cnt;
+				p=p->fail;
+			}
+		}
+	}
+}
+int get(struct *cur,const char *s){
+	if(*s=='\0') return cur->cnt;
+	else return get(cur->nxt[s[0]-'a'],s+1);
+}
+void del(struct node *cur){
+	if(cur==NULL) return;
+	for(int i=0;i<26;++i) del(cur->nxt[i]);
+	delete cur;
+}
+```
 ### 左偏树
 ```C++
 node* merge(node *a,node *b){
