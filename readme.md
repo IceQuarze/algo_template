@@ -62,9 +62,17 @@ void build(){
 			if(cur->nxt[i]==NULL) continue;
 			struct node *f=cur->fail;
 			while(true){
-				if(f=NULL){cur->nxt[i]->fail=root;break;}
-				if(f->nxt[i]!=NULL&f->nxt[i]!=cur->nxt[i]){cur->nxt[i]->fail=f->nxt[i];break;
-				else f=f->fail;
+				if(f==NULL){
+					cur->nxt[i]->fail=root;
+					break;
+				}
+				if(f->nxt[i]!=NULL&f->nxt[i]!=cur->nxt[i]){
+					cur->nxt[i]->fail=f->nxt[i];
+					break;
+				}
+				else{
+					f=f->fail;
+				}
 			}
 		}
 		q.push(cur->nxt[i]);
