@@ -41,14 +41,19 @@ void kmp(){
 struct node{
 	struct node *nxt[26],*fail;
 	int cnt;
+	bool isE;
 	node(){
 		memset(nxt,0,sizeof(nxt));
 		fail=NULL;
 		cnt=0;
+		isE=false;
 	}
 };
 void ins(struct node *cur,const char *s){
-	if(*s=='\0') return;
+	if(*s=='\0'){
+		isE=true;
+		return;
+	}
 	if(cur->nxt[*s-'a']==NULL) cur->nxt[*s-'a']=new node();
 	ins(cur->nxt[*s-'a'],s+1);
 }
@@ -74,8 +79,8 @@ void build(){
 					f=f->fail;
 				}
 			}
+			q.push(cur->nxt[i]);
 		}
-		q.push(cur->nxt[i]);
 	}
 }
 void ac(const char *s){
@@ -85,16 +90,27 @@ void ac(const char *s){
 		if(cur->nxt[s[i]-'a']!=NULL){
 			cur=cur->nxt[s[i]-'a'];
 			struct node *p=cur;
-			while(p!=root){
+			while(p!=root){ //如果不求每个单词出现的数量，遇到之前访问过的字符串时，直接退出
 				++p->cnt;
 				p=p->fail;
 			}
 		}
 	}
 }
-int get(struct node *cur,const char *s){
-	if(*s=='\0') return cur->cnt;
-	else return get(cur->nxt[s[0]-'a'],s+1);
+map<string,int> mp;
+string stk;
+void get(int cur){
+	if(cur->isE==true){
+		++mp[stk];
+		return;
+	}
+	for(int i=0;i<26;++i){
+		if(cur->nxt[i]!=NULL){
+			stk.push_back('a'+i);
+			get(cur->nxt[i]);
+			stk.pop_back();
+		}
+	}
 }
 void del(struct node *cur){
 	if(cur==NULL) return;
