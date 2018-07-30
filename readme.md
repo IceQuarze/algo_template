@@ -122,8 +122,9 @@ void del(struct node *cur){
 ```C++
 char s[N+5];
 int sa[N+5],x[N+5],y[N+5],c[N+5];
+int len,m;
 void SA(){
-	int len=strlen(s),m=128;
+	len=strlen(s),m=128;
 	memset(c,0,(m+1)*sizeof(int));
 	for(int i=0;i<len;++i) x[i]=s[i];
 	for(int i=0;i<len;++i) ++c[x[i]];
@@ -147,6 +148,12 @@ void SA(){
 		if(clk==len) break;
 		m=clk;
 	}
+}
+int height[N+5];
+void SA_H(){
+	int i,j,k=0;
+	for(i=0;i<len;height[i++]=k)
+		for(k>0?--k:0,j=sa[rank[i]-1];s[i+k]==s[j+k];++k);
 }
 ```
 ### 左偏树
