@@ -148,6 +148,8 @@ void SA(){
 		if(clk==len) break;
 		m=clk;
 	}
+	for(int i=0;i<len;++i)
+		x[sa[i]]=i;
 }
 int height[N+5];
 void SA_H(){
