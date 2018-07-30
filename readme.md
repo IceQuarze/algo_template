@@ -121,7 +121,7 @@ void del(struct node *cur){
 ### 后缀数组
 ```C++
 char s[N+5];
-int sa[N+5],x[N+5],y[N+5],c[N+5];
+int sa[N+5],x[N+5],y[N+5],c[N+5]; // 字符串下标 0~len-1 , 排名 0~len-1
 int len,m;
 void SA(){
 	len=strlen(s),m=128;
