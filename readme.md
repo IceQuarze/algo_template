@@ -118,6 +118,37 @@ void del(struct node *cur){
 	delete cur;
 }
 ```
+### 后缀数组
+```C++
+char s[N+5];
+int sa[N+5],x[N+5],y[N+5],c[N+5];
+void SA(){
+	int len=strlen(s),m=128;
+	memset(c,0,(m+1)*sizeof(int));
+	for(int i=0;i<len;++i) x[i]=s[i];
+	for(int i=0;i<len;++i) ++c[x[i]];
+	for(int i=2;i<=m;++i) c[i]+=c[i-1];
+	for(int k=1;k<=len;++k){
+		int clk=0;
+		for(int i=len-k;i<len;++i) y[clk++]=i;
+		for(int i=0;i<len;++i) if(sa[i]>=k) y[clk++]=sa[i]-k;
+		memset(c,0,(m+1)*sizeof(int));
+		for(int i=0;i<len;++i) ++c[x[i]];
+		for(int i=2;i<=m;++i) c[i]+=c[i-1];
+		for(int i=len-1;i>=0;--i) sa[--c[x[y[i]]]=y[i],y[i]=0;
+		swap(x,y);
+		clk=1;x[sa[0]]=1;
+		for(int i=1;i<len;++i){
+			if(y[sa[i]]!=y[sa[i-1]]||y[sa[i]+k]!=y[sa[i-1]+k])
+				x[i]=++clk;
+			else
+				x[i]=clk;
+		}
+		if(clk==len) break;
+		m=clk;
+	}
+}
+```
 ### 左偏树
 ```C++
 node* merge(node *a,node *b){
