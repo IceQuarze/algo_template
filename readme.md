@@ -152,7 +152,7 @@ void SA(){
 int height[N+5];
 void SA_H(){
 	int i,j,k=0;
-	for(i=0;i<len;height[i++]=k)
+	for(i=0;i<len;height[rank[i++]]=k)
 		for(k>0?--k:0,j=sa[rank[i]-1];s[i+k]==s[j+k];++k);
 }
 ```
