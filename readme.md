@@ -215,6 +215,21 @@ void tarjan(int cur){
 	}
 }
 ```
+### tarjan最近公共祖先
+``` C++
+void tarjan(int cur){
+	for(auto &nxt:ve[cur]){
+		tarjan(nxt);
+		merge(cur,nxt);
+		vst[nxt]=true;
+	}
+	for(auto &q:query[cur]){
+		if(vst[q]){
+			ans.push_back(aci(q));
+		}
+	}
+}
+```
 ### spfa(dfs判负环)
 ```C++
 vector<int> ve[N];
