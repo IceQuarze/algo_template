@@ -42,9 +42,10 @@ void kmp(){
 int nxt[N+5],ex[N+5];
 char s[N+5],pat[N+5];
 void build(){
+	memset(nxt,0,sizeof(nxt));
 	int i,j,po,len=strlen(pat);
 	nxt[0]=len;
-	for(i=0;i+1<len&&pat[i]=pat[i+1];++i);
+	for(i=0;i+1<len&&pat[i]==pat[i+1];++i);
 	nxt[1]=i;
 	for(i=2,po=1;i<len;++i){
 		if(i+nxt[i-po]<po+nxt[po])
