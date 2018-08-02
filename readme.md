@@ -634,3 +634,40 @@ void solve(){
 	}
 }
 ```
+### 数位dp
+```C++
+vector<int> v;
+int dp[10][10];
+int cal(int dep){
+    int sum=0;
+
+    for(int i=0;i<=9;++i) dp[dep][i]=0;
+    for(int i=0;i<=9;++i){
+        dp[dep][v[dep]]+=dp[dep-1][i];
+    }
+    if(不能转移的情况去除){
+    }
+    if(dep==v.size()-1){
+        sum+=dp[dep][v[dep]];
+    }else{
+        sum+=cal(dep+1);
+    }
+
+    for(int i=0;i<=9;++i) dp[dep][i]=0;
+    for(int i=0;i<v[dep];++i){
+        for(int j=0;j<=9;++j){
+            dp[dep][i]+=dp[dep-1][j];
+        }
+        if(不能转移的情况去除){
+    	}
+    }
+    if(dep==v.size()-1){
+        for(int i=0;i<v[dep];++i) sum+=dp[dep][i];
+    }else{
+        v[dep+1]=9;
+        sum+=cal(dep+1);
+    }
+
+    return sum;
+}
+```
