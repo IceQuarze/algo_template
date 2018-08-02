@@ -17,8 +17,9 @@ int ext_gcd(int a,int b,int &x,int &y){
 ### KMP
 ```C++
 void build(){
-	for(int k=0,q=2;q<=len;++q){
-		while(pat[q]!=pat[k+1]&&k>0)
+	nxt[1]=-1;
+	for(int k=-1,q=1;q<len;++q){
+		while(pat[q]!=pat[k+1]&&k!=-1)
 			k=nxt[k];
 		if(pat[q]==pat[k+1])
 			++k;
@@ -26,12 +27,12 @@ void build(){
 	}
 }
 void kmp(){
-	for(int k=0,q=1;q<=len;++q){
-		while(str[q]!=pat[k+1]&&k>0)
+	for(int k=-1,q=0;q<len;++q){
+		while(str[q]!=pat[k+1]&&k!=-1)
 			k=nxt[k];
 		if(str[q]==pat[k+1])
 			++k;
-		if(k==len_pat)
+		if(k==len_pat-1)
 			cout<<"Found"<<endl;
 	}
 }
