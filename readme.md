@@ -36,6 +36,44 @@ void kmp(){
 	}
 }
 ```
+### 扩展KMP
+```C++
+int nxt[N+5],ex[N+5];
+char s[N+5],pat[N+5];
+void build(){
+	int i,j,po,len=strlen(pat);
+	nxt[0]=len;
+	for(i=0;i+1<len&&pat[i]=pat[i+1];++i);
+	nxt[1]=i;
+	for(i=2,po=1;i<len;++i){
+		if(i+nxt[i-po]<po+nxt[po])
+			nxt[i]=nxt[i-po];
+		else{
+			j=po+nxt[po]-i;
+			if(j<0) j=0;
+			for(;i+j<len&&pat[j]==pat[i+j];++j);
+			nxt[i]=j;
+			po=i;
+		}
+	}
+}
+void exkmp(){
+	int i,j,po,len1=strlen(s),len2=strlen(pat);
+	for(i=0;i<len1&&i<len2&&s[i]==pat[i];++i);
+	ex[0]=i;
+	for(i=1,po=0;i<len1;++i){
+		if(i+nxt[i-po]<p+ex[po])
+			ex[i]=nxt[i-po];
+		else{
+			j=po+ex[po]-i;
+			if(j<0) j=0;
+			for(;i+j<len1&&j<len2&&s[i+j]==pat[j];++j);
+			ex[i]=j;
+			po=i;
+		}
+	}
+}
+```
 ### AC自动机
 ```C++
 struct node{
