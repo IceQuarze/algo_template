@@ -619,3 +619,18 @@ int main(){
 	}
 }
 ```
+### 最长公共上升子序列
+```C++
+//a[i]!=b[j]:   F[i][j]=F[i-1][j]
+//a[i]==b[j]:   F[i][j]=max(F[i-1][k])+1 1<=k<=j-1&&b[j]>b[k]
+void solve(){
+	for(int i=1;i<=n;++i){
+		int mx=0;
+		for(int j=1;j<=m;++j){
+			if(a[i]>b[i]) mx=max(mx,dp[i-1][j]);
+			if(a[i]!=b[i]) dp[i][j]=dp[i-1][j];
+			else dp[i][j]=max+1;
+		}
+	}
+}
+```
