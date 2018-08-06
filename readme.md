@@ -14,7 +14,7 @@ int ext_gcd(int a,int b,int &x,int &y){
 	return d;
 }
 ```
-### KMP
+### KMP Luogu_3375
 ```C++
 void build(){
 	nxt[1]=-1;
@@ -37,7 +37,7 @@ void kmp(){
 	}
 }
 ```
-### 扩展KMP
+### 扩展KMP HDU_2594
 ```C++
 int nxt[N+5],ex[N+5];
 char s[N+5],pat[N+5];
@@ -76,7 +76,7 @@ void exkmp(){
 	}
 }
 ```
-### AC自动机
+### AC自动机 Luogu_3808
 ```C++
 struct node{
 	struct node *nxt[26],*fail;
@@ -158,7 +158,7 @@ void del(struct node *cur){
 	delete cur;
 }
 ```
-### 后缀数组
+### 后缀数组 POJ_2774
 ```C++
 char s[N+5];
 int sa[N+5],x[N+5],y[N+5],c[N+5]; // 字符串下标 0~len-1 , 排名 0~len-1
