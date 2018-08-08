@@ -198,7 +198,7 @@ void SA_H(){
 		for(k>0?--k:0,j=sa[rank[i]-1];s[i+k]==s[j+k];++k);
 }
 ```
-### 左偏树
+### 左偏树 HDU_1512
 ```C++
 node* merge(node *a,node *b){
 	if(a==NULL)
