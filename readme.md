@@ -467,6 +467,10 @@ int sg(int n){
 ```
 ### Treap
 ```C++
+inline int random(){
+    static int seed=703; //seed可以随便取
+    return seed=int(seed*48271LL%2147483647);
+}
 struct node{
 	int prio,v;
 	node *l,*r;
