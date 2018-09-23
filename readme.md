@@ -1,10 +1,322 @@
-## 算法模版
+_____
+### 矩阵求逆（模求逆）%%sm|Luogu_4783%%
+```C++
+int mtx[N+5][2*N+5]
+bool guass(){
+	int div;
+	for(int i=1;i<=n;++i){
+		int k=i;
+		for(int j=i+1;j<=n;++j) if(mtx[j][i]>mtx[k][i]) k=j;
+		if(!(div=mtx[k][i])) return false;
+		for(int j=i+1;j<=2*n;++j) swap(mtx[k][j],mtx[i][j]);
+		for(int j=i+1,inv=fp(div,MOD-2,MOD);j<=2*n;++j) mtx[i][j]=(mtx[i][j]*inv)%MOD;
+		for(k=1;k<=n;++k){
+			if(k==i) continue;
+			div=mtx[k][i];
+			for(int j=i;j<=2*n;++j) mtx[k][j]=((mtx[k][j]-div*mtx[i][j])%MOD+MOD)%MOD;
+		}
+	}
+	return true;
+}
+```
+### 矩阵求逆（浮点数）%%sm|Luogu_3389%%
+```C++
+double mtx[N+5][2*N+5]
+bool gauss(){
+	int div;
+    for(int i=1;i<=n;i++){
+        int k=i;
+        for(int j=i+1;j<=n;j++)if(fabs(mtx[j][i])>fabs(mxt[k][i])) k=j;
+        if(fabs(div=mtx[k][i])<EPS)return false;
+        for(int j=i;j<=2*n;j++)swap(div[k][j],div[i][j]);
+        for(int j=i;j<=2*n;j++) mtx[i][j]/=div;
+        for(k=1;k<=n;k++)if(k!=i){
+                div=mtx[k][i];
+                for(int j=i;j<=2*n;j++) mtx[k][j]-=div*mtx[i][j];
+            }
+    }
+    return true;
+}
+```
+_____
+### 线性基 %%sm|BZOJ_2460 Luogu_3812%%
+```C++
+ull p[N+5];
+void ins(ull x){
+	for(ll i=0;i<=64;++i){
+		if(!((x>>i)&1)) continue;
+		if(!p[i]){
+		/*
+			p[i]=x;
+			return;	//异或最大
+		*/
+			
+			for(int j=0;j<i;++j) if(x>>j&1LL) x^=p[j];
+			for(int j=i+1;j<=64;++j) if(p[j]>>i&1LL) p[j]^=x;
+			p[i]=x;
+			++cnt;
+			return;	//异或第k大
+		}else x^=p[i];
+	}
+}
+ull getMX(){
+	ull ans=0;
+	for(ll i=64;i>=0;--i){
+		ans=max(ans,ans^p[i]);
+	}
+	return ans;
+}
+bool hasNum(ull x){
+	for(ll i=0;i<=64;++i){
+		if((x>>i)&1) x^=p[i];
+	}
+	if(x==0) return true;
+	else return false;
+}
+vector<ll> vb;
+void getBase(){
+	for(int i=0;i<=ML;++i) if(p[i]) vb.push_back(p[i]);
+}
+ll getK(ll k){
+	ll ans=0;
+	for(ll i=0;i<(int)vb.size();++i){
+		if(k>>i&1) ans^=vb[i];
+	}
+	return ans;
+}
+```
+_____
+### k短路_A*优化 %%sm|POJ_2449%%
+```C++
+struct data{
+    int g,h,cur;
+}dt;
+bool operator<(const data &a,const data &b){//大根堆注意
+    if(a.g+a.h!=b.g+b.h) return a.g+a.h>b.g+b.h;
+    else return a.g>b.g;
+}
+int AS(){
+    priority_queue<data> q;
+    int cnt=0;
+    if(s==t) ++k;
+    dt.cur=s,dt.g=0,dt.h=dis[s];
+    q.push(dt);
+    while(!q.empty()){
+        data dd=q.top();
+        q.pop();
+        int cur=dd.cur;
+        if(cur==t) ++cnt;
+        if(cnt==k) return dd.g;
+        for(int i=0;i<(int)ve[cur].size();++i){
+            int nxt=ve[cur][i].first,w=ve[cur][i].second;
+            dt.cur=nxt,dt.g=dd.g+w,dt.h=dis[nxt];
+            q.push(dt);
+        }
+	}
+	return -1;//找不到
+}
+```
+_____
+### Dijkstra最短路 %%sm|HDU_2544%%
+```C++
+vector<pair<int,int>> ve[N+5];
+int dis[N+5];
+void dij(){
+	memset(dis,0x3f,sizeof(dis));
+	dis[1]=0;
+	priority_queue<pair<int,int>> q;
+	q.push(make_pair(0,1));
+	while(!q.empty()){
+		int cur=q.front().second;
+		q.pop();
+		for(int i=0;i<(int)ve[cur].size();++i){
+			int nxt = ve[cur][i].first, w = ve[cur][i].second;
+			if (dis[nxt] > dis[cur] + w) {
+                dis[nxt] = dis[cur] + w;
+                q.push(make_pair(dis[nxt], nxt));
+            }
+		}
+	}
+}
+```
+_____
+### Java快速输入输出
+```java
+import java.util.StringTokenizer;
+import java.io.PrintWriter;
+StringBuilder sb=new StringBuilder();
+while(true){
+	int t=System.in.read();
+	if(t==-1) break;
+	else sb.append((char)t);
+}
+String s=sb.toString();
+StringTokenizer in=new StringTokenizer(s);
+PrintWriter out=new PrintWriter(System.out);
+```
+_____
+### NTT快速数论变换 %%sm|Luogu_3803%%
+```C++
+#define P 998244353LL
+#define G 3	//原根
+vector<ll> cidx;
+ll top,l;
+void build(ll sz){
+    top=1,l=0;
+    while(top<sz) top<<=1,++l;
+    top<<=1,++l;
+    cidx=vector<ll>(top);
+    for(ll i=0;i<top;++i) cidx[i]=(cidx[i>>1]>>1)|((i&1)<<(l-1));
+}
+void NTT(vector<ll> &v,ll flag){
+    for(ll i=0;i<top;++i) if(i<cidx[i]) swap(v[i],v[cidx[i]]);
+    for(ll i=1;i<top;i<<=1){
+        ll omn=fp(G,(P-1)/(i<<1),P); if(flag==-1) omn=fp(omn,P-2,P);
+        for(ll j=0;j<top;j+=(i<<1)){
+            ll om=1;
+            for(ll k=0;k<i;++k,om=om*omn%P){
+                ll omx=v[j+k],omy=om*v[j+i+k]%P;
+                v[j+k]=(omx+omy)%P;
+                v[j+i+k]=((omx-omy)%P+P)%P;
+            }
+        }
+    }
+    if(flag==-1){
+        ll inv=fp(v.size(),P-2,P);
+        for(ll i=0;i<(ll)v.size();++i) v[i]=v[i]*inv%P;
+    }
+}
+```
+### 迭代FFT
+```C++
+//输出的时候(int)(c.real()+0.5)转成%d输出，%.0f输出-0.1的时候会带上负号
+typedef complex<double> _cd;
+typedef vector<_cd> _vcd;
+int top,l;
+void build(int sz){
+    top=1,l=0;
+    while(top<sz) top<<=1,++l;
+    cidx=vector<int>(top);
+    for(int i=0;i<top;++i) cidx[i]=(cidx[i>>1]>>1)|((i&1)<<(l-1));
+}
+void FFT(_vcd &v,int flag){
+    for(int i=0;i<top;++i) if(i<cidx[i]) swap(v[i],v[cidx[i]]);
+    for(int i=1;i<top;i<<=1){
+        _cd omn(cos(M_PI/i),flag*sin(M_PI/i));
+        for(int j=0;j<top;j+=(i<<1)){
+            _cd om(1,0);
+            for(int k=0;k<i;++k,om*=omn){
+                _cd omx=v[j+k],omy=om*v[j+i+k];
+                v[j+k]=omx+omy;
+                v[j+i+k]=omx-omy;
+            }
+        }
+    }
+}
+```
+### 递归FFT
+```C++
+using _cd=complex<double>;
+using _vcd=vector<_cd>;
+_vcd FFT(_vcd &a,int sign){ //sign=1 FFT,sign=-1 IFFT
+	int n=a.size();
+	auto omn=_cd(cos(sign*2*M_PI/n),sin(2*M_PI/n));
+	auto om=_cd(1,0);
+	_vcd a0,a1;
+	for(int i=0;i<n;++i){
+		if(i%2==0) a0.push_back(a[i]);
+		else a1.push_back(a[i]);
+	}
+	_vcd y1,y2;
+	y0=FFT(a0);
+	y1=FFT(a1);
+	_vcd y(n);
+	for(int i=0;i<n/2;++i){
+		y[i]=y0[i]+om*y1[i];
+		y[i+n/2]=y0[i]-om*y1[i];
+		om=om*omn;
+	}
+	return y;
+}
+```
+_____
+### 树状数组
+```C++
+int tree[N+5];
+void add(int i,int x){
+	while(i<=n){
+		tree[i]+=x;
+		i+=i&-i;
+	}
+}
+int get(int i){
+	int sum=0;
+	while(i>0){
+		sum+=tree[i];
+		i-=i&-i;
+	}
+	return i;
+}
+```
+_____
+### 快速排序
+```C++
+void qs(vector<int> &v,int l,int r){
+	if(l>=r) return;
+	int pl=l,pr=r;
+	int mv=v[(l+r)/2];
+	while(pl<=pr){
+		while(v[pl]<mv) ++pl;
+		while(v[pr]>mv) --pr;
+		if(pl<=pr){
+			swap(v[pl],v[pr]);
+			++pl,++pr;
+		}
+	}
+	qs(v,l,pr);
+	qs(v,pl,r);
+}
+		
+```
+_____
+### 小根堆
+```C++
+int heap[N+5],top=0;
+void ins(int v){
+	heap[++top]=v;
+	int po=top;
+	while(po>1&&heap[po]<heap[po>>1])
+		swap(heap[po],heap[po>>1]),po>>=1;
+}
+void pop(){
+	swap(heap[top],heap[1]);
+	heap[top--]=0;
+	int po=2;
+	while(po<=top){
+		if(po<top&&heap[po+1]<heap[po]) ++po;
+		if(heap[po]<heap[po>>1]) swap(heap[po],heap[po>>1]),po<<=1;
+		else break;
+	}
+}
+```
+_____
+### GDB pretty printer
+```python
+python
+import sys
+sys.path.insert(0, 'C:/Program Files (x86)/CodeBlocks/MinGW/share/gcc-5.1.0/python/libstdcxx/v6')
+from printers import register_libstdcxx_printers
+register_libstdcxx_printers (None)
+end
+```
+_____
 ### gcd
 ```C++
 int gcd(int a,int b){
 	return b==0?a:gcd(b,a%b);
 }
 ```
+_____
 ### ext_gcd
 ```C++
 int ext_gcd(int a,int b,int &x,int &y){
@@ -14,7 +326,28 @@ int ext_gcd(int a,int b,int &x,int &y){
 	return d;
 }
 ```
-### KMP Luogu_3375
+### 费马小定理
+```C++
+$$X=A^{p-2}$$
+```
+### 线性递推逆元 %%sm|Luogu_3811%%
+```C++
+/*
+设$$p=k*i+r$$
+$$k∗i+r≡0(mod\ p)$$
+$$k*r^{-1}+i^{-1}≡0(mod\ p)$$
+$$i^{-1}≡-k*r^{-1}(mod\ p)$$
+$$i^{-1}≡(-\lfloor \frac{p}{i}\rfloor *(p\ mod\ i))\ (mod\ p)$$
+*/
+int dp[N+5];
+dp[1]=1;
+for(int i=2;i<=n;++i){
+	dp[i]=-(p/i)*dp[p%i];
+	dp[i]=(dp[i]%p+p)%p;
+}
+```
+_____
+### KMP %%sm|Luogu_3375%%
 ```C++
 void build(){
 	nxt[1]=-1;
@@ -37,7 +370,8 @@ void kmp(){
 	}
 }
 ```
-### 扩展KMP HDU_2594
+_____
+### 扩展KMP %%sm|HDU_2594%%
 ```C++
 int nxt[N+5],ex[N+5];
 char s[N+5],pat[N+5];
@@ -76,7 +410,8 @@ void exkmp(){
 	}
 }
 ```
-### AC自动机 Luogu_3808
+_____
+### AC自动机 %%sm|Luogu_3808%%
 ```C++
 struct node{
 	struct node *nxt[26],*fail;
@@ -158,7 +493,8 @@ void del(struct node *cur){
 	delete cur;
 }
 ```
-### 后缀数组 POJ_2774
+_____
+### 后缀数组 %%sm|POJ_2774%%
 ```C++
 char s[N+5];
 int sa[N+5],x[N+5],y[N+5],c[N+5]; // 字符串下标 0~len-1 , 排名 0~len-1
@@ -198,7 +534,8 @@ void SA_H(){
 		for(k>0?--k:0,j=sa[rank[i]-1];s[i+k]==s[j+k];++k);
 }
 ```
-### 左偏树 HDU_1512
+_____
+### 左偏树 %%sm|HDU_1512 Luogu_3377%%
 ```C++
 node* merge(node *a,node *b){
 	if(a==NULL)
@@ -214,17 +551,16 @@ node* merge(node *a,node *b){
 	return a;
 }
 ```
-### 并查集
+_____
+### 并查集 %%sm|Luogu_3367%%
 ```C++
 int tree[N+5];
 int aci(int cur){
-	if(tree[cur]==0){
-		return cur;
-	}else{
-		return tree[cur]=aci(tree[cur]);
-	}
+	if(tree[cur]==0) return cur;
+	else return tree[cur]=aci(tree[cur]);
 }
 ```
+_____
 ### tarjan缩点
 ```C++
 vector<int> ve[N];
@@ -255,6 +591,7 @@ void tarjan(int cur){
 	}
 }
 ```
+_____
 ### tarjan最近公共祖先
 ``` C++
 void tarjan(int cur){
@@ -270,7 +607,8 @@ void tarjan(int cur){
 	}
 }
 ```
-### spfa(dfs判负环)
+_____
+### spfa(dfs判负环) %%sm|Luogu_P3385%%
 ```C++
 vector<int> ve[N];
 int vst[N],dis[N],w[N][N];
@@ -291,6 +629,7 @@ void spfa(int cur){
 	vst[cur]=false;
 }
 ```
+_____
 ### spfa(bfs最短路)
 ```C++
 vector<int> ve[N]
@@ -322,6 +661,7 @@ void spfa(int root){
 	}
 }
 ```
+_____
 ### 埃氏筛法
 ```C++
 bool nP[N];
@@ -333,7 +673,8 @@ void SI(){
 	}
 }
 ```
-### 欧拉筛法
+_____
+### 欧拉筛法 %%sm|Luogu_3383%%
 ```C++
 vector<int> vp;
 int vst[N];
@@ -348,85 +689,69 @@ void SI(){
 	}
 }
 ```
+_____
 ### 快速乘
 ```C++
 int fm(int a,int b,int m){
-	int ans=0;
+	int t=a%m,ans=0;
 	while(b){
 		if(b&1){
-			ans+=a;
-			ans%=m;
+			ans=ans+t;
+			if(ans>m) ans-=m;	//取模速度可能会慢一倍
 		}
+		t=t+t;
+		if(t>m) t-=m;
 		b>>=1;
-		a+=a;
-		a%=m;
 	}
 	return ans;
 }
 ```
+_____
 ### 快速幂
 ```C++
 int fp(int a,int r,int m){
 	int t=a%m,ans=1;
 	while(r){
-		if(r&1){
-			ans*=t;
-			ans%=m;
-		}
+		if(r&1) ans=(ans*t)%m;
+		t=(t*t)%m;
 		r>>=1;
-		t*=t;
-		t%=m;
 	}
 	return ans;
 }
 ```
+_____
 ### RM素数判断
 ```C++
 //2,3,7,11,61,24251
 bool RM(int n,int p){
-	int d=n-1;
-	while(d%2==0){
-		d>>=1;
-	}
-	for(int i=n-1;i>=d;i>>=1){
-		int t=fm(p,r,n);
-		if(t==n-1){
-			return true;
-		}else if(t!=1&&t!=n-1){
-			return false;
-		}
-	}
-	return true;
+    for(int i=n-1;;i>>=1){
+        int t=fp(p,i,n);
+        if(t==n-1) return true;
+        else if(t!=1&&t!=n-1) return false;
+        if(i&1) return true;
+    }
 }
 ```
-### RHO素因数分解
+_____
+### RHO素因数分解 %%sm|POJ 1811%%
 ```C++
 int f(int x,int m){
 	int r;
-	if(m>1000000){
-		r=999979; //魔数
-	}else if(m>1000){
-		r=997; //魔数
-	}else{
-		r=rand()%10;
-	}
+	if(m>1e6) r=1e6;
+	else r=rand()%10;
 	return (fm(x,x,m)+r)%m;
 }
 int RHO(int n){
-	int a=rand()%n;
-	int b=a;
+	int a=rand()%10;int b=a;	//初始化成一个随机数很重要
 	while(true){
-		a=f(a,m);b=f(f(b,m),m);
-		if(a==b){
-			return -1;
-		}
-		int g=gcd(abs(a-b),m);
-		if(g!=1&&g!=n){
-			return g;
-		}
+		a=f(a,n);b=f(f(b,m),n);
+		if(a==b) return -1;
+		int g=gcd(abs(a-b),n);
+		if(g!=1&&g!=n) return g;
 	}
 }
 ```
+_____
 ### 欧拉路
 ```C++
 int cnt[N][N];
@@ -442,6 +767,7 @@ void dfs(int cur){
     pth.push_back(cur);
 }
 ```
+_____
 ### 尼姆博奕sg函数
 ```C++
 vector<int> nxt;
@@ -465,6 +791,7 @@ int sg(int n){
 	}
 }
 ```
+_____
 ### Treap
 ```C++
 inline int random(){
@@ -529,6 +856,7 @@ node *rmv(node *cur,int v){
 	return cur;
 }
 ```
+_____
 ### 欧拉函数
 ``` C++
 int phi(int n){
@@ -545,6 +873,7 @@ int phi(int n){
 	return mul;
 }
 ```
+_____
 ### 区间线段树
 ```C++
 int tree[N+5],inc[N+5];
@@ -584,6 +913,7 @@ int get(int cur,int l,int r,int tl,int tr){
     }
 }
 ```
+_____
 ### 马拉车回文算法
 ```C++
 //s="$#a#b#c#d#"
@@ -609,6 +939,7 @@ int mlc(){
 	return mx_len;
 }
 ```
+_____
 ### st表
 ```C++
 int tree[N+5][25];
@@ -638,6 +969,7 @@ int search(int l,int r){
 	return max(tree[l][c],tree[r-(1<<c)+1][c]);
 }
 ```
+_____
 ### 匈牙利算法|最大二分图匹配
 ```C++
 vector<int> ve[N+5];
@@ -663,6 +995,7 @@ int main(){
 	}
 }
 ```
+_____
 ### 最长公共上升子序列
 ```C++
 //a[i]!=b[j]:   F[i][j]=F[i-1][j]
@@ -678,6 +1011,7 @@ void solve(){
 	}
 }
 ```
+_____
 ### 数位dp
 ```C++
 vector<int> v;
@@ -715,3 +1049,5 @@ int cal(int dep){
     return sum;
 }
 ```
+_____
+### End
